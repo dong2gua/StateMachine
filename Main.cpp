@@ -38,11 +38,11 @@ int main(void)
 	motor.Halt();
 	motor.Halt();
 #else
-	MotorNMData* dataNM = new MotorNMData();
+	MotorNMData *dataNM = new MotorNMData();
 	dataNM->speed = 100;
 	motorNM.SetSpeed(dataNM);
 
-	MotorNMData* dataNM2 = new MotorNMData();
+	MotorNMData *dataNM2 = new MotorNMData();
 	dataNM2->speed = 200;
 	motorNM.SetSpeed(dataNM2);
 
@@ -52,11 +52,11 @@ int main(void)
 	// Create Motor object with macro support
 	Motor motor;
 
-	MotorData* data = new MotorData();
+	MotorData *data = new MotorData();
 	data->speed = 100;
 	motor.SetSpeed(data);
 
-	MotorData* data2 = new MotorData();
+	MotorData *data2 = new MotorData();
 	data2->speed = 200;
 	motor.SetSpeed(data2);
 
@@ -85,4 +85,3 @@ int main(void)
 
 	return 0;
 }
-

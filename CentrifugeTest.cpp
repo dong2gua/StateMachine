@@ -3,48 +3,45 @@
 
 using namespace std;
 
-CentrifugeTest::CentrifugeTest() :
-	SelfTest(ST_MAX_STATES),
-	m_pollActive(FALSE),
-	m_speed(0)
+CentrifugeTest::CentrifugeTest() : SelfTest(ST_MAX_STATES),
+								   m_pollActive(FALSE),
+								   m_speed(0)
 {
 }
-	
+
 void CentrifugeTest::Start()
 {
-	BEGIN_TRANSITION_MAP			              			// - Current State -
-		TRANSITION_MAP_ENTRY (ST_START_TEST)				// ST_IDLE
-		TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)				// ST_COMPLETED
-		TRANSITION_MAP_ENTRY (CANNOT_HAPPEN)				// ST_FAILED
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_START_TEST
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_ACCELERATION
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_WAIT_FOR_ACCELERATION
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_DECELERATION
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_WAIT_FOR_DECELERATION
-	END_TRANSITION_MAP(NULL)
+	BEGIN_TRANSITION_MAP					// - Current State -
+	TRANSITION_MAP_ENTRY(ST_START_TEST)		// ST_IDLE
+		TRANSITION_MAP_ENTRY(CANNOT_HAPPEN) // ST_COMPLETED
+		TRANSITION_MAP_ENTRY(CANNOT_HAPPEN) // ST_FAILED
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED) // ST_START_TEST
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED) // ST_ACCELERATION
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED) // ST_WAIT_FOR_ACCELERATION
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED) // ST_DECELERATION
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED) // ST_WAIT_FOR_DECELERATION
+		END_TRANSITION_MAP(NULL)
 }
 
-void CentrifugeTest::Poll()
-{
-	BEGIN_TRANSITION_MAP			              			// - Current State -
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_IDLE
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_COMPLETED
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_FAILED
-		TRANSITION_MAP_ENTRY (EVENT_IGNORED)				// ST_START_TEST
-		TRANSITION_MAP_ENTRY (ST_WAIT_FOR_ACCELERATION)		// ST_ACCELERATION
-		TRANSITION_MAP_ENTRY (ST_WAIT_FOR_ACCELERATION)		// ST_WAIT_FOR_ACCELERATION
-		TRANSITION_MAP_ENTRY (ST_WAIT_FOR_DECELERATION)		// ST_DECELERATION
-		TRANSITION_MAP_ENTRY (ST_WAIT_FOR_DECELERATION)		// ST_WAIT_FOR_DECELERATION
-	END_TRANSITION_MAP(NULL)
-}
+void CentrifugeTest::Poll(){
+	BEGIN_TRANSITION_MAP						   // - Current State -
+		TRANSITION_MAP_ENTRY(EVENT_IGNORED)		   // ST_IDLE
+	TRANSITION_MAP_ENTRY(EVENT_IGNORED)			   // ST_COMPLETED
+	TRANSITION_MAP_ENTRY(EVENT_IGNORED)			   // ST_FAILED
+	TRANSITION_MAP_ENTRY(EVENT_IGNORED)			   // ST_START_TEST
+	TRANSITION_MAP_ENTRY(ST_WAIT_FOR_ACCELERATION) // ST_ACCELERATION
+	TRANSITION_MAP_ENTRY(ST_WAIT_FOR_ACCELERATION) // ST_WAIT_FOR_ACCELERATION
+	TRANSITION_MAP_ENTRY(ST_WAIT_FOR_DECELERATION) // ST_DECELERATION
+	TRANSITION_MAP_ENTRY(ST_WAIT_FOR_DECELERATION) // ST_WAIT_FOR_DECELERATION
+	END_TRANSITION_MAP(NULL)}
 
-// Idle state here overrides the SelfTest Idle state. 
+// Idle state here overrides the SelfTest Idle state.
 STATE_DEFINE(CentrifugeTest, Idle, NoEventData)
 {
 	cout << "CentrifugeTest::ST_Idle" << endl;
 
 	// Call base class Idle state
-	SelfTest::ST_Idle(data);	
+	SelfTest::ST_Idle(data);
 	StopPoll();
 }
 
@@ -60,15 +57,15 @@ GUARD_DEFINE(CentrifugeTest, GuardStartTest, NoEventData)
 {
 	cout << "CentrifugeTest::GD_GuardStartTest" << endl;
 	if (m_speed == 0)
-		return TRUE;	// Centrifuge stopped. OK to start test.
+		return TRUE; // Centrifuge stopped. OK to start test.
 	else
-		return FALSE;	// Centrifuge spinning. Can't start test.
+		return FALSE; // Centrifuge spinning. Can't start test.
 }
 
 // Start accelerating the centrifuge.
 STATE_DEFINE(CentrifugeTest, Acceleration, NoEventData)
 {
-	cout << "CentrifugeTest::ST_Acceleration" << endl;	
+	cout << "CentrifugeTest::ST_Acceleration" << endl;
 
 	// Start polling while waiting for centrifuge to ramp up to speed
 	StartPoll();
