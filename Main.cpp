@@ -3,10 +3,32 @@
 #include "Motor.h"
 #include "Player.h"
 #include "CentrifugeTest.h"
+#include "Motion.h"
 
 using namespace std;
 
 int main(void)
+{
+	Motion motionInstance;
+	ParameterData *data = new ParameterData();
+	data->paramData.position = 1.1;
+	data->paramData.velocity = 2.2;
+	data->paramData.acceleration = 3.3;
+	data->paramData.jerk = 4.4;
+
+	motionInstance.Commit(data);
+
+	motionInstance.Start();
+	motionInstance.ResourceAcquired();
+
+	// Event that cannot happen.
+	// data->paramData.jerk = 5.5;
+	// motionInstance.Commit(data);
+
+	motionInstance.Interrupt();
+}
+
+int main1(void)
 {
 	// Create MotorNM (No Macro) test object
 	MotorNM motorNM;

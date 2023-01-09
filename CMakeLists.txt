@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 
 project(state-machine-example VERSION 0.1 LANGUAGES C CXX)
 
-set(NOT_USING_HEAP_DATA FALSE CACHE BOOL "Build unit test project to test the smotion library.")
+set(NOT_USING_HEAP_DATA FALSE CACHE BOOL "Not using head to allocate the signal data.")
 
 set(EXECUTABLE_OUTPUT_PATH bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
