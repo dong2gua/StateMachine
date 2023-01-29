@@ -4,28 +4,75 @@
 #include "Player.h"
 #include "CentrifugeTest.h"
 #include "Motion.h"
+#include "Operation.h"
+#include "Subject.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
-int main(void)
+void TestMotionStateMachine()
 {
-	Motion motionInstance;
-	ParameterData *data = new ParameterData();
-	data->paramData.position = 1.1;
-	data->paramData.velocity = 2.2;
-	data->paramData.acceleration = 3.3;
-	data->paramData.jerk = 4.4;
+	// Motion motionInstance;
+	// ParameterData *data = new ParameterData();
+	// data->paramData.position = 1.1;
+	// data->paramData.velocity = 2.2;
+	// data->paramData.acceleration = 3.3;
+	// data->paramData.jerk = 4.4;
 
-	motionInstance.Commit(data);
-
-	motionInstance.Start();
-	motionInstance.ResourceAcquired();
-
-	// Event that cannot happen.
-	// data->paramData.jerk = 5.5;
 	// motionInstance.Commit(data);
 
-	motionInstance.Interrupt();
+	// motionInstance.Start();
+	// motionInstance.ResourceAcquired();
+
+	// // Event that cannot happen.
+	// // data->paramData.jerk = 5.5;
+	// // motionInstance.Commit(data);
+
+	// motionInstance.Interrupt();
+}
+
+void TestOperationOnSubject()
+{
+	bool done, aborted, busy, active;
+
+	Operation op1(111);
+	Operation op2(222);
+	Subject sub(300);
+
+	PseudoData testParamData;
+	testParamData.value = 654;
+	ParameterData *pParam = new ParameterData();
+	pParam->pseudoData = testParamData;
+
+	op1.Commit(pParam);
+
+	// op1.candidateParameter.value = 888;
+	SubjectData *pSubData = new SubjectData();
+	pSubData->TargetSubject = &sub;
+	op1.Start(pSubData);
+
+	// Wait for a while so that the operation can do some work.
+	// std::this_thread::sleep_for(std::chrono::seconds(3));
+	// op1.Interrupt();
+
+	// simulate another operation is acquiring the subject.
+	// PseudoData testParamData2;
+	// testParamData2.value = 789;
+	// ParameterData *pParam2 = new ParameterData();
+	// pParam2->pseudoData = testParamData2;
+	// op2.Commit(pParam2);
+	// SubjectData *pSubData2 = new SubjectData();
+	// pSubData2->TargetSubject = &sub;
+	// op2.Start(pSubData2);
+
+	system("pause");
+}
+
+int main(void)
+{
+	TestOperationOnSubject();
 }
 
 int main1(void)

@@ -15,7 +15,7 @@ STATE_DEFINE(Motion, Idle, NoEventData)
 	std::cout << "Motion::ST_Idle" << std::endl;
 }
 
-STATE_DEFINE(Motion, ParametersCommited, ParameterData)
+STATE_DEFINE(Motion, ParametersCommited, MotionParameterData)
 {
 	std::cout << "Motion::ST_PARAMETERS_COMMITED" << std::endl;
 
@@ -57,7 +57,7 @@ STATE_DEFINE(Motion, Done, NoEventData)
 	InternalEvent(ST_IDLE);
 }
 
-void Motion::Commit(ParameterData *param)
+void Motion::Commit(MotionParameterData *param)
 {
 	BEGIN_TRANSITION_MAP						 // - Current State -
 	TRANSITION_MAP_ENTRY(ST_PARAMETERS_COMMITED) // ST_IDLE

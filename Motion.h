@@ -9,7 +9,7 @@ struct KineticParam
 	double jerk;
 };
 
-class ParameterData : public EventData
+class MotionParameterData : public EventData
 {
 public:
 	KineticParam paramData;
@@ -22,7 +22,7 @@ public:
 	virtual ~Motion();
 
 	// External event
-	void Commit(ParameterData *param);
+	void Commit(MotionParameterData *param);
 	void Start();
 	void ResourceAcquired();
 	void TrajectoryCompleted();
@@ -45,7 +45,7 @@ private:
 
 	// Define the state machine state functions with event data type
 	STATE_DECLARE(Motion, Idle, NoEventData)
-	STATE_DECLARE(Motion, ParametersCommited, ParameterData)
+	STATE_DECLARE(Motion, ParametersCommited, MotionParameterData)
 	STATE_DECLARE(Motion, PendingExecute, NoEventData)
 	STATE_DECLARE(Motion, Running, NoEventData)
 	STATE_DECLARE(Motion, Aborted, NoEventData)
